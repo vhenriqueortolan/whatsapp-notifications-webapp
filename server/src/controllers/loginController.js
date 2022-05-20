@@ -20,7 +20,7 @@ function loginControler(req, res){
                    if(err){
                        console.log(err)
                    }
-                   res.send({"token": token})
+                   res.send({"email": operator.email, "name": operator.name, "token": token})
                })
             }).catch()
             

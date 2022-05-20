@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ResultFormAlert from "../../components/Alerts/ResultFormAlert";
 import DefaultForm from "../../components/forms/NotificationsForm/DefaultForm";
@@ -14,19 +14,33 @@ export default function Home(): JSX.Element {
     const contextAuth = useAuth()
     const contextForms = useFormContext()
     const navigate = useNavigate()
-    const token = localStorage.getItem('')
-    
-    useEffect(() => {
-        contextAuth.getUserData(contextAuth.setName, contextAuth.setEmail)
-     },[contextAuth.token])
+
+    async function getUserData(){
+        contextForms.setIsLoading(true)
+        const t = localStorage.getItem('u')
+        if(t) {
+            const token = JSON.parse(t)
+            Api.defaults.headers.post['Authorization'] = token.token
+            const response = await Api.post('/auth', {'action': 'getUserData'})
+            console.log(response)
+            contextAuth.setName(response.data.name)
+            contextAuth.setEmail(response.data.email)
+        }    
+    }
+
+    useLayoutEffect(()=>{
+        getUserData()
+        contextForms.setIsLoading(false)
+    }, [])
 
     handleOpeningDetails()
 
     return (
         <>   
+        <input type="button" value="LOGOUT" onClick={() => {localStorage.clear(); navigate('/login')}} />
         {contextForms.isLoading === true ? <div className="absolute z-10 h-full w-full"><Loading /></div> : null}
         {contextForms.isRequestDone === true ? <div className="absolute z-10 h-full w-full"><ResultFormAlert/></div> : null}
-        <div className={contextForms.isLoading || contextForms.isRequestDone === true ? 'opacity-25 pointer-events-none' : "h-full w-full flex flex-col justify-center"}>
+        <div className={contextForms.isLoading || contextForms.isRequestDone === true ? 'opacity-25 pointer-events-none ' : "h-full w-full flex flex-col justify-center"}>
             <header className="my-6 border-separate">
                 <h1 className="text-center text-4xl mb-3">Olá, <span className="font-[700]">{contextAuth.name}</span>!</h1>
                 <p className="text-center text-2xl">Escolha o modelo de mensagem que você quer usar:</p>

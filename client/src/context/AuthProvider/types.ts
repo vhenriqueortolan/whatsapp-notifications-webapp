@@ -4,16 +4,17 @@ export interface IUserData{
 }
 
 export interface IToken extends IUserData {
-    token: string | number | boolean | null | undefined,
+    token: {token: string},
+    
 }
 
 export interface IContext extends IToken {
-    authenticate: (email: string, password: string, setToken: IContext['setToken']) => Promise<void>,
-    logout: () => void,
+    authenticate: (email: string, password: string) => Promise<void>,
     setName: (e: string) => void,
     setEmail: (e: string) => void,
-    getUserData: (setName: IContext['setName'], setEmail: IContext['setEmail']) => Promise<void>,
     setToken: (t: object) => void 
+    setIsLogged: (e: boolean) => void,
+    isLogged: boolean
 }
 
 export interface IAuthProvider {

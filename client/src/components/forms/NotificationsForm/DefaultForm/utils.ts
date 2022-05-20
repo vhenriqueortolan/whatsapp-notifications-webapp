@@ -15,7 +15,7 @@ export async function handleSubmit(e: React.FormEvent<HTMLFormElement>, message:
         const idClient = allClients[i].id
         const idWhatsapp = allWhatsappNumbers[i].id
         try {
-            const post = await Api.post('apiBlip', {
+            const post = await Api.post('api/blip/defaultNotification', {
                 "nomeAgente": name,
                 "emailAgente": email,
                 "cliente": client,

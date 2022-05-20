@@ -1,8 +1,10 @@
+require('dotenv').config()
 const axios = require('axios')
 const express = require('express')
 const blip = express.Router()
 
 blip.post('/defaultNotification', (req,res)=>{
+    console.log(req)
     const headers = {
         "Content-Type":"application/json",
         "Authorization":`${process.env.BLIPTOKEN}`
@@ -15,7 +17,6 @@ blip.post('/defaultNotification', (req,res)=>{
                 "method": "get",
                 "uri": `lime://wa.gw.msging.net/accounts/+55${req.body.whatsapp}`
                 }, {headers: headers})
-                console.log(id.data.status)
             if (id.data.status == "success") {
                 const update = await axios.post(process.env.URI_BLIPCOMMAND, {
                     "id": "{{$guid}}",

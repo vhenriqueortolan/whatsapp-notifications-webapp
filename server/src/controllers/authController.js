@@ -4,7 +4,6 @@ const OperatorModel = mongoose.model('operators')
 const jwt = require('jsonwebtoken')
 
 function authController(req, res){
-    console.log(req.headers.authorization)
     const private = 'eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY1Mjk4MzQxMCwiaWF0IjoxNjUyOTgzNDEwfQ.8hMklcw8tNfJGQDsxOFal_35axPKtfNQNh4VcakAS0w'
     const token =  req.headers.authorization
     jwt.verify(token, private, (err, decoded)=>{

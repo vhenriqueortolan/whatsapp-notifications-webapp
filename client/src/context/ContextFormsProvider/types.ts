@@ -9,14 +9,14 @@ export interface IRequest {
 }
 
 export interface IFormStates{
-    isLoading: boolean,
+    isLoading: boolean | undefined,
     isRequestDone: boolean,
     arrayOfContacts: Array<IResponse>,
     contacts: Array<IResponse>
 }
 
 export interface IFormSetStates extends IFormStates {
-    setIsLoading: (e: boolean) => void, 
+    setIsLoading: (e: boolean | undefined) => void,
     setIsRequestDone: (e: boolean) => void,
     setContacts: (e: IFormSetStates['arrayOfContacts']) => void
 }

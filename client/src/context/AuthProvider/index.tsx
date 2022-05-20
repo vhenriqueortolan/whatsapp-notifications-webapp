@@ -1,4 +1,5 @@
 import React, {createContext, useEffect, useState} from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Api } from "../../services/api";
 import { IAuthProvider, IContext, IToken, IUserData } from "./types";
 import { getUserLocalStorage, LoginRequest, setUserLocalStorage } from "./util";
@@ -6,35 +7,27 @@ import { getUserLocalStorage, LoginRequest, setUserLocalStorage } from "./util";
 export const AuthContext = createContext<IContext>({} as IContext)
 
 export const AuthProvider = ({children}: IAuthProvider) => {
-    const [name, setName] = useState<IUserData['name']>()
-    const [email, setEmail] = useState(String)
+    const [name, setName] = useState<IUserData['name']>('')
+    const [email, setEmail] = useState('')
     const [token, setToken] = useState(Object)
+    const [isLogged, setIsLogged] = useState(false)
 
-    async function authenticate(email: string, password: string, setToken: (e: object) => void) {
+    async function authenticate(email: string, password: string) {
         try {
             const response = await LoginRequest(email, password)
             const t = {token: response.token}
+            setEmail(response.email)
+            setName(response.name)
             setToken(t)
-            console.log()
             setUserLocalStorage(t)
         } catch (err) {
             console.log(err)
         }
     }
 
-    async function getUserData(){
-        const response = await Api.post('/auth', {"action": "getData"},)
-        console.log(response)
-        setName(response.data.name)
-        setEmail(response.data.email)
-    }
-
-    function logout() {
-        setUserLocalStorage(null)
-    }
-
+    
     return (
-        <AuthContext.Provider value={{token, authenticate, logout, setEmail, setName, name, email, getUserData, setToken}}>
+        <AuthContext.Provider value={{token, authenticate, setEmail, setName, name, email, setToken, isLogged, setIsLogged}}>
             {children}
         </AuthContext.Provider>
     )

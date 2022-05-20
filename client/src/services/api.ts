@@ -1,6 +1,6 @@
 import axios from "axios";
 
-let jwt = {}
+let jwt: {token: string}
 const token = localStorage.getItem('u')
 token ? jwt = JSON.parse(token) : null
 
@@ -9,4 +9,3 @@ export const Api = axios.create({
 })
 
 Api.defaults.headers.post['Accept'] = 'http://localhost:3000'
-token ? Api.defaults.headers.post['Authorization'] = jwt.token : null

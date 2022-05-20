@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express");
 const server = express()
 const path = require('path')
@@ -9,15 +10,15 @@ const auth = require("./src/routes/auth");
 server.use(express.urlencoded({extended: true}))
 server.use(express.json())
 server.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Headers', '*')
     res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE');
     server.use(cors());
     next();
 });
 
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb+srv://whatsapp-notifications-webapp:G3marketing3085@cluster0.rcuuh.mongodb.net/?retryWrites=true&w=majority', {
+mongoose.connect(process.env.DB_CONNECT, {
     useNewUrlParser: true, 
     useUnifiedTopology: true
 }).then(() => {
