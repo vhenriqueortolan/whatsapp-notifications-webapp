@@ -1,14 +1,27 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useAuth } from "../../context/AuthProvider/useAuth";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useFormContext from "../../context/ContextFormsProvider/useFormContext";
+import { Api } from "../../services/api";
+import { AxiosPromise, AxiosResponse } from "axios";
+import { IFormSetStates } from "../../context/ContextFormsProvider/types";
+import { IContext } from "../../context/AuthProvider/types";
 
 export default function ProtectedLayout({children}: {children: JSX.Element}) {
-    // const auth = useAuth()
-    // const navigate = useNavigate()
-    const auth = {token: 123}
-    if(!auth.token){
-        return <Navigate to={'/login'} />
-    }
+    const navigate = useNavigate()
+    const contextForms = useFormContext()
+    const contextAuth = useAuth()
+    const setIsLoading = contextForms.setIsLoading
+    const token = localStorage.getItem('u')
 
-    return children
+    useEffect(()=>{
+        () => setIsLoading(true)
+        if(!token){
+            navigate('/login')
+        }
+    }, [])
+    
+    return (
+        children
+    )
 }

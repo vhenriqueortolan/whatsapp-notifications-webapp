@@ -16,9 +16,9 @@ export interface IFormStates{
 }
 
 export interface IFormSetStates extends IFormStates {
-    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>, 
-    setIsRequestDone: React.Dispatch<React.SetStateAction<boolean>>,
-    setContacts: React.Dispatch<React.SetStateAction<IFormSetStates['arrayOfContacts']>>
+    setIsLoading: (e: boolean) => void, 
+    setIsRequestDone: (e: boolean) => void,
+    setContacts: (e: IFormSetStates['arrayOfContacts']) => void
 }
 
 export interface IResponse {

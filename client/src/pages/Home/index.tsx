@@ -1,4 +1,5 @@
-import React, { FunctionComponentElement, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ResultFormAlert from "../../components/Alerts/ResultFormAlert";
 import DefaultForm from "../../components/forms/NotificationsForm/DefaultForm";
 import DocumentForm from "../../components/forms/NotificationsForm/DocumentForm";
@@ -6,13 +7,18 @@ import ReturnForm from "../../components/forms/NotificationsForm/ReturnForm";
 import Loading from "../../components/Loading";
 import { useAuth } from "../../context/AuthProvider/useAuth";
 import useFormContext from "../../context/ContextFormsProvider/useFormContext";
+import { Api } from "../../services/api";
 import { handleOpeningDetails } from "./utils";
 
-export default function Home(): JSX.Element{
+export default function Home(): JSX.Element {
     const contextAuth = useAuth()
     const contextForms = useFormContext()
-    const email = "marketing@g3.imb.br"
-    const name = 'Victor'
+    const navigate = useNavigate()
+    const token = localStorage.getItem('')
+    
+    useEffect(() => {
+        contextAuth.getUserData(contextAuth.setName, contextAuth.setEmail)
+     },[contextAuth.token])
 
     handleOpeningDetails()
 
@@ -22,7 +28,7 @@ export default function Home(): JSX.Element{
         {contextForms.isRequestDone === true ? <div className="absolute z-10 h-full w-full"><ResultFormAlert/></div> : null}
         <div className={contextForms.isLoading || contextForms.isRequestDone === true ? 'opacity-25 pointer-events-none' : "h-full w-full flex flex-col justify-center"}>
             <header className="my-6 border-separate">
-                <h1 className="text-center text-4xl mb-3">Olá, <span className="font-[700]">{name}</span>!</h1>
+                <h1 className="text-center text-4xl mb-3">Olá, <span className="font-[700]">{contextAuth.name}</span>!</h1>
                 <p className="text-center text-2xl">Escolha o modelo de mensagem que você quer usar:</p>
             </header>
             <div className="grid grid-flow-row content-center sm:h-fit w-screen gap-1 ">
@@ -31,7 +37,7 @@ export default function Home(): JSX.Element{
                         INICIAR CONVERSA
                     </summary>
                     <div className="bg-slate-400 w-[98%] mx-auto rounded-b-md shadow-sm">
-                        <DefaultForm email={email} name={name}/>
+                        <DefaultForm/>
                     </div>
                 </details>
                 <details className="w-[90%] sm:w-[60%] mx-auto">
@@ -39,7 +45,7 @@ export default function Home(): JSX.Element{
                         RETORNAR CONVERSA
                     </summary>
                     <div className="bg-slate-400 w-[98%] mx-auto rounded-b-md shadow-sm">
-                        <ReturnForm email={email} name={name} />
+                        <ReturnForm/>
                     </div>
                 </details>
                 <details className="w-[90%] sm:w-[60%] mx-auto">
@@ -47,7 +53,7 @@ export default function Home(): JSX.Element{
                         ENVIAR ARQUIVO
                     </summary>
                     <div className="bg-slate-400 w-[98%] mx-auto rounded-b-md shadow-sm">
-                        <DocumentForm email={email} name={name} />
+                        <DocumentForm/>
                     </div>
                 </details>
             </div>

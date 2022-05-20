@@ -1,27 +1,23 @@
 import { Api } from "../../services/api"
 import { IToken } from "./types"
 
-export function setUserLocalStorage (user: IToken | null) {
-    localStorage.setItem('u', JSON.stringify(user))
+export function setUserLocalStorage (token: IToken | null) {
+    localStorage.setItem('u', JSON.stringify(token))
 }
 
 export function getUserLocalStorage () {
-    const u = localStorage.getItem('u')
-
-    if (!u) {
-        return null
+    const t = localStorage.getItem('u')
+    if (t === null || undefined) {
+        return undefined
+    }else {
+        return JSON.parse(t)
     }
-
-    const user = JSON.parse(u)
-
-    return user ?? null
 }
 
 export async function LoginRequest(email: string, password: string){
     try {
         const request = await Api.post('login',{email, password})
-        console.log(request)
-        return JSON.parse(request.data)
+        return request.data
 
     } catch (error) {
         return error

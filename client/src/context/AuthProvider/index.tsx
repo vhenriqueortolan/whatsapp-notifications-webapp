@@ -1,38 +1,40 @@
 import React, {createContext, useEffect, useState} from "react";
-import { IAuthProvider, IContext, IToken } from "./types";
+import { Api } from "../../services/api";
+import { IAuthProvider, IContext, IToken, IUserData } from "./types";
 import { getUserLocalStorage, LoginRequest, setUserLocalStorage } from "./util";
 
 export const AuthContext = createContext<IContext>({} as IContext)
 
 export const AuthProvider = ({children}: IAuthProvider) => {
-    const [user, setUser] = useState< IToken | null>()
+    const [name, setName] = useState<IUserData['name']>()
+    const [email, setEmail] = useState(String)
+    const [token, setToken] = useState(Object)
 
-    useEffect(() => {
-        const user = getUserLocalStorage()
-
-        if (user) {
-            setUser(user)
+    async function authenticate(email: string, password: string, setToken: (e: object) => void) {
+        try {
+            const response = await LoginRequest(email, password)
+            const t = {token: response.token}
+            setToken(t)
+            console.log()
+            setUserLocalStorage(t)
+        } catch (err) {
+            console.log(err)
         }
-        setUser(null)
-    }, [])
+    }
 
-    async function authenticate(email: string, password: string) {
-        const response = await LoginRequest(email, password)
-        const user = {token: response}
-
-        setUser(user)
-        setUserLocalStorage(user)
-
-        return user
+    async function getUserData(){
+        const response = await Api.post('/auth', {"action": "getData"},)
+        console.log(response)
+        setName(response.data.name)
+        setEmail(response.data.email)
     }
 
     function logout() {
-        setUser(null)
         setUserLocalStorage(null)
     }
 
     return (
-        <AuthContext.Provider value={{...user, authenticate, logout}}>
+        <AuthContext.Provider value={{token, authenticate, logout, setEmail, setName, name, email, getUserData, setToken}}>
             {children}
         </AuthContext.Provider>
     )
