@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt')
 function loginControler(req, res){
     console.log(req.body)
     OperatorModel.findOne({email: req.body.email}).then((operator)=> {
+        console.log(operator)
         bcrypt.compare(req.body.password, operator.password, function(err, result) {
             if(err){
                 console.log(err) 
@@ -25,7 +26,9 @@ function loginControler(req, res){
             }).catch()
             
         })
-    }).catch()
+    }).catch((err) => {
+        console.log(err)
+    })
 }
 
 module.exports = loginControler

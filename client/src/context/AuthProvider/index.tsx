@@ -18,8 +18,8 @@ export const AuthProvider = ({children}: IAuthProvider) => {
             const t = {token: response.token}
             setEmail(response.email)
             setName(response.name)
-            setToken(t)
             setUserLocalStorage(t)
+            return t
         } catch (err) {
             console.log(err)
         }

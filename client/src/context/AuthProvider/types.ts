@@ -9,7 +9,7 @@ export interface IToken extends IUserData {
 }
 
 export interface IContext extends IToken {
-    authenticate: (email: string, password: string) => Promise<void>,
+    authenticate: (email: string, password: string) => Promise<IToken | undefined>,
     setName: (e: string) => void,
     setEmail: (e: string) => void,
     setToken: (t: object) => void 

@@ -15,7 +15,11 @@ export default function LoginForm(){
         contextForms.setIsLoading(true)
         const auth = await contextAuth.authenticate(email, password)
         contextAuth.setIsLogged(true)
-        navigate ('/')
+        if (auth!.token != null || undefined){
+                navigate ('/')
+        }else{
+            contextForms.setIsLoading(false)
+        }
     }
 
     return (
