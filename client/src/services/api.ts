@@ -1,11 +1,8 @@
 import axios from "axios";
-
-let jwt: {token: string}
-const token = localStorage.getItem('u')
-token ? jwt = JSON.parse(token) : null
+import {config} from '../../config/config';
 
 export const Api = axios.create({
-    baseURL: 'https://localhost:5000'
+    baseURL: config.apiURI
 })
 
-Api.defaults.headers.post['Accept'] = 'http://localhost:3000'
+Api.defaults.headers.post['Accept'] = 'http://localhost:3004'

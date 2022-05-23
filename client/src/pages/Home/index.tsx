@@ -9,6 +9,7 @@ import { useAuth } from "../../context/AuthProvider/useAuth";
 import useFormContext from "../../context/ContextFormsProvider/useFormContext";
 import { Api } from "../../services/api";
 import { handleOpeningDetails } from "./utils";
+import {config} from '../../../config/config';
 
 export default function Home(): JSX.Element {
     const contextAuth = useAuth()
@@ -72,7 +73,7 @@ export default function Home(): JSX.Element {
                 </details>
             </div>
             <div className="flex items-end my-6">
-                <img src="https://app.g3.imb.br/public/media/logo_rodape.png" className="max-w-[100px] sm:max-w-[150px] mx-auto"></img>
+                <img src={`../../src/assets/${config.assets.logo}`} className="max-w-[100px] sm:max-w-[150px] mx-auto"></img>
             </div>
         </div>
         </>

@@ -2,6 +2,7 @@ import { Api } from "../../services/api"
 import { IToken } from "./types"
 
 export function setUserLocalStorage (token: IToken | null) {
+    localStorage.clear()
     localStorage.setItem('u', JSON.stringify(token))
 }
 

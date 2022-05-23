@@ -15,32 +15,37 @@ export async function handleSubmit(e: React.FormEvent<HTMLFormElement>, message:
         const idClient = allClients[i].id
         const idWhatsapp = allWhatsappNumbers[i].id
         try {
-            const post = await Api.post('api/blip/defaultNotification', {
-                "nomeAgente": name,
-                "emailAgente": email,
-                "cliente": client,
-                "whatsapp": whatsapp,
-                "mensagem": message
-            })
-            if (post.data.status == "success"){
-                console.log(post.data)
-                arrayOfContacts.push({idClient, idWhatsapp, client, whatsapp, status: 'success'})
-            }
-            else {
-                console.log(post.data)
-                const err = post.data.message
-                const errDesc = post.data.description
-                arrayOfContacts.push({idClient, idWhatsapp, client, whatsapp, status: 'error', response: {message: err, description: errDesc}})
+            const t = localStorage.getItem('u')
+            if(t) {
+                const token = JSON.parse(t)
+                Api.defaults.headers.post['authorization'] = token.token
+                const post = await Api.post('api/blip/defaultNotification', {
+                    "nomeAgente": name,
+                    "emailAgente": email,
+                    "cliente": client,
+                    "whatsapp": whatsapp,
+                    "mensagem": message
+                })
+                if (post.data.status == "success"){
+                    arrayOfContacts.push({idClient, idWhatsapp, client, whatsapp, status: 'success'})
+                }
+                else {
+                    const err = post.data.message
+                    const errDesc = post.data.description
+                    arrayOfContacts.push({idClient, idWhatsapp, client, whatsapp, status: 'error', response: {message: err, description: errDesc}})
+                }
+            }else{
+                arrayOfContacts.push({idClient, idWhatsapp, client, whatsapp, status: 'error'})
             }
         }
         catch (err){
             console.log(err)
+            arrayOfContacts.push({idClient, idWhatsapp, client, whatsapp, status: 'error'})
         }
     }
     setContacts(arrayOfContacts)
     setIsLoading(false)
     setIsRequestDone(true)
-    console.log(arrayOfContacts)
 }
 
 export function addContact(contacts: HTMLElement, id: number){

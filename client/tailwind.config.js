@@ -4,22 +4,17 @@ module.exports = {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    fontFamily: {
-      sans: ['Space Grotesk', 'sans-serif']
-    },
-    extend: {
-      colors:{
-        'orange': '#f0731b',
-        'blue': '#0b1f68'
+      fontFamily: {
+        sans: ['Space Grotesk', 'sans-serif']
       },
-      animation: {
-        'spin-slow': 'spin 2s linear infinite'
+      extend: {
+        colors: {
+          'orange': '#f0731b',
+          'blue': '#0b1f68'
+        },
+        animation: {
+          'spin-slow': 'spin 2s linear infinite'
+        }
       }
-    },
   },
-  plugins: [{
-    tailwindcss: {},
-    autoprefixer: {},
-  },
-],
 }

@@ -1,6 +1,6 @@
 const express = require('express')
 const api = express.Router()
-const blip = require('../services/ApiTakeBlip/dafaultNotification')
+const blip = require('../services/ApiTakeBlip/DefaultTemplate/dafaultNotification')
 const createOperator = require('../controllers/createOperator')
 
 api.use('/blip', blip)
